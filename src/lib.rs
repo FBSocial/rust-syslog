@@ -311,6 +311,7 @@ impl BasicLogger {
 pub fn detailed_format(record: &Record) -> String {
     let line_number = record.line().unwrap_or(0);
     let now = time::now();
+    println!("now: {}", now.rfc3339());
     let current_thread = std::thread::current();
 
     let file_path = record
@@ -322,7 +323,8 @@ pub fn detailed_format(record: &Record) -> String {
         "[{:5}] {} {} {}:{} {}:{} {}",
         // now.now().to_offset(offset!(+8)).format(&TS_S).unwrap_or_default(),
         record.level(),
-        now.strftime("%FT%H:%m:%S.%f%z").unwrap_or(now.rfc3339()),
+        now.strftime("%FT%H:%M:%S.%f%z").unwrap_or(now.rfc3339()),
+        // now.rfc3339(),
         current_thread.name().unwrap_or("unknown-thread-name"),
         record.module_path().unwrap_or("<unnamed>"),
         line_number,
