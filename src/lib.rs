@@ -311,7 +311,7 @@ impl BasicLogger {
 pub fn detailed_format(record: &Record) -> String {
     let line_number = record.line().unwrap_or(0);
     let now = time::now();
-    println!("now: {}", now.rfc3339());
+    // println!("now: {}", now.rfc3339());
     let current_thread = std::thread::current();
 
     let file_path = record
