@@ -81,7 +81,7 @@ impl<T: Display> LogFormat<T> for Formatter3164 {
 }
 
 #[derive(Clone,Debug)]
-pub struct DetailedFormatter3164 {
+pub struct Formatter3164WithRevision {
   pub facility: Facility,
   pub hostname: Option<String>,
   pub process:  String,
@@ -89,7 +89,7 @@ pub struct DetailedFormatter3164 {
   pub revision: String, // normally it is: git commit hash short
 }
 
-impl<T: Display> LogFormat<T> for DetailedFormatter3164 {
+impl<T: Display> LogFormat<T> for Formatter3164WithRevision {
   fn format<W: Write>(&self, w: &mut W, severity: Severity, message: T)   -> Result<()> {
     if let Some(ref hostname) = self.hostname {
         write!(w, "<{}>{} {} {}[{}]: r_{}, {}",
