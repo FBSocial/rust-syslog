@@ -80,6 +80,31 @@ impl<T: Display> LogFormat<T> for Formatter3164 {
   }
 }
 
+#[derive(Clone,Debug)]
+pub struct DetailedFormatter3164 {
+  pub facility: Facility,
+  pub hostname: Option<String>,
+  pub process:  String,
+  pub pid:      i32,
+  pub revision: String, // normally it is: git commit hash short
+}
+
+impl<T: Display> LogFormat<T> for DetailedFormatter3164 {
+  fn format<W: Write>(&self, w: &mut W, severity: Severity, message: T)   -> Result<()> {
+    if let Some(ref hostname) = self.hostname {
+        write!(w, "<{}>{} {} {}[{}]: r_{}, {}",
+          encode_priority(severity, self.facility),
+          time::now().strftime("%b %d %T").unwrap(),
+          hostname, self.process, self.pid, self.revision, message).chain_err(|| ErrorKind::Format)
+    } else {
+        write!(w, "<{}>{} {}[{}]: r_{}, {}",
+          encode_priority(severity, self.facility),
+          time::now().strftime("%b %d %T").unwrap(),
+          self.process, self.pid, self.revision, message).chain_err(|| ErrorKind::Format)
+    }
+  }
+}
+
 /// RFC 5424 structured data
 pub type StructuredData = HashMap<String, HashMap<String, String>>;
 

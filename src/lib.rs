@@ -78,7 +78,7 @@ use log::{Level, Log, Metadata, Record};
 
 pub use errors::*;
 pub use facility::Facility;
-pub use format::{Formatter3164, Formatter5424, LogFormat};
+pub use format::{Formatter3164, Formatter5424, DetailedFormatter3164, LogFormat};
 pub use format::Severity;
 
 mod facility;
