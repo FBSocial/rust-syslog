@@ -314,13 +314,8 @@ pub fn detailed_format(record: &Record) -> String {
     // println!("now: {}", now.rfc3339());
     let current_thread = std::thread::current();
 
-    let file_path = record
-        .file()
-        .map(|p| if p.starts_with("/") { "file://".to_string() + p } else { p.to_string() })
-        .unwrap_or("<unnamed>".to_string());
-
     format!(
-        "[{:5}] {} {} {}:{} {}:{} {}",
+        "[{:5}] {} {} {}:{} {}",
         // now.now().to_offset(offset!(+8)).format(&TS_S).unwrap_or_default(),
         record.level(),
         now.strftime("%FT%H:%M:%S.%f%z").unwrap_or(now.rfc3339()),
@@ -328,8 +323,6 @@ pub fn detailed_format(record: &Record) -> String {
         current_thread.name().unwrap_or("unknown-thread-name"),
         record.module_path().unwrap_or("<unnamed>"),
         line_number,
-        file_path,
-        record.line().unwrap_or(0),
         &record.args()
     )
 }
